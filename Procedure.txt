@@ -1,0 +1,9 @@
+Créer un dossier normal
+si nouvelle machine, dans le dossier---->Installer python3.11-venv
+python3 -m venv env   
+Pour activer l'environnement----->source env/bin/activate
+installer django ou les modules de django dans l'environnement---->pip install django, pip install pillow
+django-admin startproject GesHotels .
+python3 manage.py runserver
+Pour créer une application-----> django-admin startapp Authentification
+code .   ---> Ouvrir avec vscode tout le projet. 

@@ -1,0 +1,92 @@
+Dans le fichier settings.py, il faut ajouter les éléments suivants pour gérer la gestion des utilisateurs avec les fichiers models.py, admin.py et forms.py, avec une restriction d'accès pour les utilisateurs non-superutilisateurs sur le site d'administration :
+
+    Dans la section INSTALLED_APPS, ajoutez l'application django.contrib.auth et l'application que vous avez créée pour gérer les utilisateurs (par exemple user_management) :
+
+python
+
+INSTALLED_APPS = [
+    # ...
+    'django.contrib.auth',
+    'user_management',
+    # ...
+]
+
+    Dans la section AUTH_USER_MODEL, ajoutez le chemin de votre modèle personnalisé d'utilisateur :
+
+python
+
+AUTH_USER_MODEL = 'user_management.CustomUser'
+
+    Dans la section LOGIN_URL, ajoutez l'URL de la page de connexion :
+
+python
+
+LOGIN_URL = '/login/'
+
+    Dans la section LOGOUT_URL, ajoutez l'URL de la page de déconnexion :
+
+python
+
+LOGOUT_URL = '/logout/'
+
+    Dans la section LOGIN_REDIRECT_URL, ajoutez l'URL de la page vers laquelle les utilisateurs seront redirigés après s'être connectés avec succès :
+
+python
+
+LOGIN_REDIRECT_URL = '/'
+
+    Dans la section MIDDLEWARE, ajoutez le middleware django.contrib.auth.middleware.AuthenticationMiddleware :
+
+python
+
+MIDDLEWARE = [
+    # ...
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # ...
+]
+
+    Dans la section AUTHENTICATION_BACKENDS, ajoutez le backend d'authentification django.contrib.auth.backends.ModelBackend :
+
+python
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+    Dans la section TEMPLATES, ajoutez le context_processor django.contrib.auth.context_processors.auth :
+
+python
+
+TEMPLATES = [
+    {
+        # ...
+        'OPTIONS': {
+            'context_processors': [
+                # ...
+                'django.contrib.auth.context_processors.auth',
+                # ...
+            ],
+        },
+    },
+]
+
+    Si vous souhaitez utiliser des e-mails pour l'authentification des utilisateurs, vous pouvez ajouter les éléments suivants :
+
+python
+
+# Utiliser l'adresse email comme nom d'utilisateur pour l'authentification
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'user_management.backends.EmailBackend',
+]
+
+# Configurer le backend d'authentification pour l'utilisation de l'adresse email
+AUTH_USER_MODEL = 'user_management.CustomUser'
+AUTHENTICATION_BACKENDS = ['user_management.backends.EmailBackend']
+
+# Configurer les paramètres d'envoi de mail pour la récupération de mot de passe
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # changer cette ligne pour utiliser un vrai service de mail
+DEFAULT_FROM_EMAIL = 'admin@example.com'
+EMAIL_SUBJECT_PREFIX = '[MySite] '
+
+Notez que ces éléments dépendent de votre application et de la façon dont vous avez configuré l'authentification des utilisateurs. Vous pouvez également ajouter d'autres paramètres en fonction de vos besoins.

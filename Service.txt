@@ -1,0 +1,60 @@
+Voici un exemple de code Django pour permettre à un utilisateur superadmin d'ajouter un service et de le gérer uniquement depuis le site d'administration Django :
+
+    Créez un fichier models.py pour définir votre modèle de service :
+
+python
+
+from django.db import models
+
+class Service(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+
+    def __str__(self):
+        return self.name
+
+    Créez un fichier admin.py pour enregistrer votre modèle de service pour l'interface d'administration Django :
+
+python
+
+from django.contrib import admin
+from .models import Service
+
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description', 'price')
+
+    Dans le fichier settings.py, ajoutez votre application au paramètre INSTALLED_APPS :
+
+python
+
+INSTALLED_APPS = [
+    # ...
+    'myapp',
+    # ...
+]
+
+    Connectez vos fichiers models.py et admin.py à votre application dans le fichier urls.py :
+
+python
+
+from django.contrib import admin
+from django.urls import path, include
+from myapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    # ...
+]
+
+    Créez et exécutez les migrations pour créer la table Service dans votre base de données :
+
+python manage.py makemigrations
+python manage.py migrate
+
+    Connectez-vous à l'interface d'administration Django et ajoutez un service dans l'onglet "Services".
+
+    Vous pouvez maintenant gérer vos services depuis l'interface d'administration Django sans avoir besoin de créer des vues, des templates ou des formulaires personnalisés.
+
+Notez que cette approche ne nécessite pas la création de vues et de templates personnalisés car tout est géré par l'interface d'administration Django. Cependant, si vous avez besoin de fonctionnalités supplémentaires qui ne sont pas fournies par défaut par Django, vous pouvez toujours créer vos propres vues et templates.

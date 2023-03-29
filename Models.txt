@@ -1,0 +1,60 @@
+Sans donner des explications, fait un exemple d'un programme divisé par model.py, admin.py et forms.py qui gere la gestion des utilisateurs (l'authentification, les sessions, les permissions et les groupes) avec django. L'utilisateur se connecte avec son mail et un mot de passe. Si l'utilisateur nest qu'uniquement membre du staff, il ne peut meme pas se connecter au site d'administration
+
+Voici un exemple de programme Django qui gère la gestion des utilisateurs en divisant le code entre models.py, admin.py et forms.py, avec une restriction d'accès pour les utilisateurs non-superutilisateurs sur le site d'administration.
+
+
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.db import models
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        pass
+        
+    def create_superuser(self, email, password=None, **extra_fields):
+        pass
+        
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=100, blank=True, null=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+    groups = models.ManyToManyField(
+        'auth.Group',
+        blank=True,
+        related_name='user_set',
+        related_query_name='user',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        blank=True,
+        related_name='user_set',
+        related_query_name='user',
+    )
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+
+    def __str__(self):
+        return self.email
+
+    def get_full_name(self):
+        return self.username
+
+    def get_short_name(self):
+        return self.username
+
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
+
+    @property
+    def is_admin(self):
+        return self.is_superuser
+
+    @property
+    def is_member_of_staff(self):
+        return self.is_staff
