@@ -3,13 +3,7 @@
 
 # -- importations des modules -- #
 from django.contrib import admin
-from .forms import ClientForm
-from .models import Client, Message
-
-@admin.register(Client)
-class ClientAdmin(admin.ModelAdmin):
-    form = ClientForm
-    list_display = ('nom', 'prenoms', 'util', 'is_client')
+from .models import Message
     
     
 # -- mise en place des registres -- #
