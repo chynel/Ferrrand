@@ -82,3 +82,4 @@ class Facture(models.Model):
     class Meta:
         verbose_name = 'Facture'
         verbose_name_plural = 'Factures'
+        
