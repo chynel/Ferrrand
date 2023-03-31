@@ -31,35 +31,54 @@ class Message(models.Model):
     # -- mise en place de la methode __str__ -- #
     def __str__(self):
         return f"Sujet : {self.sujet}" 
-    
-    
-class Facture(models.Model):
-    # -- docstring de la classe Message -- #
-    """
-        -- Cette classe représente la table des messages dans la base de 
-        -- Données
-    """
-    
-    numeroFact = models.CharField(max_length=10, unique=True)
-    totalFact = models.DecimalField(max_digits=10, decimal_places=2)
-    dateCreation = models.DateTimeField(auto_now_add=True)
-    etatFact = models.BooleanField(default=False)
-    #numeroResv = models.ForeignKey(Reservation, null = True, on_delete = models.SET_NULL)
-    #numeroCom = models.ForeignKey(Commande, null = True, on_delete = models.SET_NULL)
-    idUser = models.ForeignKey(User, null = True, on_delete = models.SET_NULL)
-
-    def save(self, *args, **kwargs):
-        if not self.numeroFact:
-            self.numeroFact = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
-        super().save(*args, **kwargs)
 
 
 class Reservation(models.Model):
-    numeroRes = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    dateReservation = models.DateField()
-    heureReservation = models.TimeField()
-    idUser = models.ForeignKey(User, null = True, on_delete = models.SET_NULL)
-    idService = models.ForeignKey(Service, null = True, on_delete = models.SET_NULL)
+    numeroRes = models.CharField(max_length=80, primary_key=True, editable=False, verbose_name='Numéro de réservation généné automatiquement')
+    dateReservation = models.DateField(verbose_name='Date de réservation')
+    heureReservation = models.TimeField(verbose_name='Heure de réservation')
+    idUser = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Utilisateur')
+    idService = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name='Service')
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.numeroRes = self.generate_random_number()
+        super().save(*args, **kwargs)
+
+    def generate_random_number(self):
+        letters = string.ascii_uppercase
+        return ''.join(random.choice(letters) for i in range(8)) + '-' + ''.join(random.choice(string.digits) for i in range(8))
 
     def __str__(self):
         return str(self.numeroRes)
+
+    class Meta:
+        verbose_name = 'Réservation'
+        verbose_name_plural = 'Réservations'
+
+    
+
+class Facture(models.Model):
+    numeroFact = models.CharField(max_length=80, primary_key=True, editable=False, verbose_name='Numero de Facture Généré automatiquement')
+    totalFact = models.DecimalField(max_digits=10, verbose_name='Total Facture', decimal_places=2)
+    dateCreation = models.DateTimeField(auto_now_add=True, verbose_name='Date de création')
+    etatFact = models.BooleanField(default=False, verbose_name='Etat Facture')
+    numeroResv = models.ForeignKey('Reservation', null=True, blank=True, on_delete=models.SET_NULL, verbose_name='Numéro de réservation')
+    #numeroCom = models.ForeignKey('Commande', null=True, blank=True, on_delete=models.SET_NULL, verbose_name='Numéro de commande')
+    idUser = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, verbose_name='Email Cleint')
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.numeroFact = self.generate_random_number()
+        super().save(*args, **kwargs)
+
+    def generate_random_number(self):
+        letters = string.ascii_uppercase
+        return ''.join(random.choice(letters) for i in range(8)) + '-' + ''.join(random.choice(string.digits) for i in range(8))
+
+    def __str__(self):
+        return str(self.numeroFact)
+
+    class Meta:
+        verbose_name = 'Facture'
+        verbose_name_plural = 'Factures'
