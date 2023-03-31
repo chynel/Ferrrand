@@ -18,7 +18,7 @@ class FactureAdmin(admin.ModelAdmin):
     list_display = ('numeroFact', 'idUser', 'totalFact', 'dateCreation', 'etatFact',)
     readonly_fields = ('numeroFact',)
     search_fields = ('idUser__email', 'numeroFact',)
-    ordering = ('-dateCreation',)
+    ordering = ('-dateCreation',)#Pour que les Factures s'affichent du plus recent à la plus vielle.
 
 # -- mise en place des registres -- #
 
