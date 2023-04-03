@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<button type="submit"><a href="">Créer un compte</a></button>
-<button type="submit"><a href="">Se connecter</a></button>
-<button type="submit"><a href="">Se deconnecter</a></button>
+{% for message in messages %}
+
+ <strong>{{ message }}<strong>
+
+{% endfor %}
+{% if customUser.is_authenticated %}
+<h3>Vous êtes connecté avec l'adresse {{ email }} Bienvenu sur ManagHotels</h3>
+<button type="submit"><a href="/logout_view">Se deconnecter</a></button>
+{% else %}
+<button type="submit"><a href="/Enregistrer">Créer un compte</a></button>
+<button type="submit"><a href="/login">Se connecter</a></button>
+{% endif %}
+
 
 {% endblock %}
