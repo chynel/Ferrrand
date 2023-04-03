@@ -9,7 +9,7 @@
 
 {% endfor %}
 
-<form method="post" action="/Enregistrer">
+<form method="post" action="Enregistrer">
     {% csrf_token %}
     <label for="Email">Email</label>
     <input type="email" name="email" id="email_client" placeholder="Entrer votre email" required>

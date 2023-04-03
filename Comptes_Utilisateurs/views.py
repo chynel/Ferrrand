@@ -1,5 +1,4 @@
 # coding: utf-8
-from django.http import HttpResponse, HttpResponseRedirect
 
 from django.shortcuts import redirect, render
 from Comptes_Utilisateurs.models import CustomUser
@@ -10,7 +9,7 @@ from django.contrib import messages
 
 
 def home(request):
-    return render(request, 'Comptes_Utilisateurs/index.html')
+    return render(request, 'index.html')
 
 
 def Enregistrer(request):
@@ -22,23 +21,22 @@ def Enregistrer(request):
         messages.success(request, 'Votre compte a été créé avec succès')
         return redirect('connexion')
 
-    return render(request, 'Comptes_Utilisateurs/Enregistrer.html')
+    return render(request, 'Enregistrer.html')
 
 
 def connexion(request):
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
-        customUser = authenticate(email=email, password=password)
-        if customUser is not None:
-            login(request, customUser)
+        customuser = authenticate(request, email=email, password=password)
+        if customuser is not None:
+            login(request, customuser)
             email = customUser.email
-            password = customUser.password
-            print(125)
-            return render(request, 'Comptes_Utilisateurs/index.html', {'email':email})
+            password = customuser.password
+            return render(request, 'index.html', {'email':email})
         else:
             messages.error(request, 'Veuillez revoir vos identifiants')
-    return render(request, 'Comptes_Utilisateurs/login.html')
+    return render(request, 'login.html')
 
 
 def logout_view(request):
