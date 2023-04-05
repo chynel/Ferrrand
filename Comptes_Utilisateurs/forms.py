@@ -2,7 +2,7 @@
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from .models import CustomUser
+from .models import CustomUser, Profile
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
@@ -47,3 +47,63 @@ class UserAdminChangeForm(forms.ModelForm):
         if CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError("L'adresse email est déjà utilisée.")
         return email
+    
+    
+    
+
+class ProfileCreationForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('phone', 'image')
+        
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if Profile.objects.filter(phone=phone).exists():
+            raise forms.ValidationError('Cet est déjà est déjà pris')
+        return phone
+
+
+    
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'noms', 'prenoms','sexe','DateNaiss']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+            raise ValidationError('Cet e-mail est déjà utilisé.')
+        return email
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    phone = forms.CharField(max_length=15, required=False)
+    image = forms.ImageField(required=False, widget=forms.FileInput())
+
+
+    class Meta:
+        model = Profile
+        fields = ['phone', 'image']
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if phone and Profile.objects.filter(phone=phone).exclude(user=self.instance.user).exists():
+            raise ValidationError('Ce numéro de téléphone est déjà utilisé.')
+        return phone
+    
+    def form_valid(self, form):
+        # enregistrer les données de formulaire
+        profile = form.save(commit=False)
+        profile.user = self.request.user
+        profile.save()
+
+        # enregistrer l'image téléchargée
+        image = form.cleaned_data.get('image')
+        if image:
+            profile.image = image
+            profile.save()
+
+        return super().form_valid(form)

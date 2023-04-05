@@ -39,7 +39,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     prenoms = models.CharField(verbose_name='Prénom(s)', max_length=80, default='Pas de prénom(s)')
     sexe = models.CharField(choices=SEXE, default='Masculin', max_length=8)
     DateNaiss = models.DateField(verbose_name="Date de naissance", default=timezone.now)
-    phone = models.CharField(max_length=100, unique=True, null=True)    
     
     is_staff = models.BooleanField(default=False)
     is_client = models.BooleanField(default=True)
@@ -59,3 +58,22 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
 from django.conf import settings
 User = settings.AUTH_USER_MODEL
+    
+def get_profile_image_filepath(self, filename):
+    return f'photoProfil/{self.pk}/{"default.jpg"}'
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to=get_profile_image_filepath)
+    phone = models.CharField(max_length=15, unique=True, blank=True, null=True)
+    
+    def create_profiles(self):
+        for user in CustomUser.objects.all():
+            try:
+                profile = user.profile
+            except Profile.DoesNotExist:
+                profile = Profile(user=user)
+                profile.save()
+
+    def __str__(self):
+        return f'{self.user.email} Profile'

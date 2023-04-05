@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import CustomUser, Profile
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
@@ -10,7 +10,7 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('is_staff', 'is_superuser', 'is_client')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal Info', {'fields': ('noms','prenoms', 'sexe', 'DateNaiss', 'phone')}),
+        ('Personal Info', {'fields': ('noms','prenoms', 'sexe', 'DateNaiss',)}),
         ('Permissions', {
             'fields': ('is_active', 'is_client', 'is_staff', 'is_superuser', 'groups', 'user_permissions',),
         }),
@@ -25,3 +25,4 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Profile)

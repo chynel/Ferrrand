@@ -1,20 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for message in messages %}
-
- <strong>{{ message }}<strong>
-
-{% endfor %}
-{% if customuser.is_authenticated %}
-    <h3>Vous êtes connecté avec l'adresse {{ email }} Bienvenu sur ManagHotels</h3>
-    <a>connecter</a>
-    <button type="submit"><a href="logout_view">Se deconnecter</a></button>
-{% else %}
-    <a>non connecter</a>
-    <button type="submit"><a href="Enregistrer">Créer un compte</a></button>
-    <button type="submit"><a href="login">Se connecter</a></button>
-{% endif %}
-
-
+  <h1>Home</h1>
+  <p>{{ message }}</p>
+  {% if button_label %}
+    <form action="{% url button_url %}" method="post">
+      {% csrf_token %}
+      <button type="submit">{{ button_label }}</button>
+    </form>
+  {% else %}
+    <div>
+      <a href="{% url 'Enregistrer' %}">Create an account</a>
+      <a href="{% url 'login' %}">Log in</a>
+    </div>
+  {% endif %}
 {% endblock %}
