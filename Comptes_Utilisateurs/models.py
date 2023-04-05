@@ -59,12 +59,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 from django.conf import settings
 User = settings.AUTH_USER_MODEL
     
-def get_profile_image_filepath(self, filename):
-    return f'photoProfil/{self.pk}/{"default.jpg"}'
+
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to=get_profile_image_filepath)
+    image = models.ImageField(upload_to="photoProfil/", blank=True)
     phone = models.CharField(max_length=15, unique=True, blank=True, null=True)
     
     def create_profiles(self):
