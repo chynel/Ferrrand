@@ -5,11 +5,7 @@
     <div style="display: flex; justify-content: space-between;">
       <div style="width: 20%;">
         <div style="border: 1px solid #ddd; padding: 20px;">
-          {% if user.profile.image %}
-            <img src="{{ user.profile.image.url }}" alt="Photo de profile" style="border-radius: 50%; width: 200px; height: 200px;">
-          {% else %}
-            <img src="{{ '../../media/default.jpg' }}" alt="Photo de profile" style="border-radius: 50%; width: 200px; height: 200px;">
-          {% endif %}
+          <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}/media/default.jpg{% endif %}" alt="Photo de profil" class="profile-picture" style="border-radius: 50%; width: 200px; height: 200px;">
           <h5 style="margin-top: 20px;">{{ user.noms }}</h5>
           <h5 style="margin-top: 20px;">{{ user.prenoms }}</h5>
           <p style="color: #777;">{{ user.email }}</p>
@@ -38,7 +34,7 @@
             {{ user_form.DateNaiss }}
 
             <br>
-            <label for="id_image">Photo de Profil:</-label>
+            <label for="id_image">Photo de Profile:</-label>
             {{ profile_form.image }}
             <button type="submit">Enregistrer les modifications</button>
           </form>
