@@ -14,11 +14,11 @@ User = get_user_model()
 def home(request):
     if request.user.is_authenticated:
         email = request.user.email
-        message = f"You are logged in as {email}"
-        button_label = "Log out"
+        message = f"Vous êtes connecté avec l'adresse : {email}"
+        button_label = "Se deconnecter"
         button_url = "logout_view"
     else:
-        message = "You are not logged in"
+        message = "Vous n'êtes plus connecté"
         button_label = ""
         button_url = ""
     return render(request, 'index.html', {'message': message, 'button_label': button_label, 'button_url': button_url})
@@ -76,7 +76,7 @@ def profile(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.info(request, 'Votre compte a été mis à jour !')
+            messages.success(request, 'Votre compte a été mis à jour !')
             return redirect('profile')
     else:
         user_form = UserUpdateForm(instance=request.user)
