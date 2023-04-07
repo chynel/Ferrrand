@@ -3,7 +3,7 @@
 
 # -- importations des modules -- #
 from django.contrib import admin
-from .models import Message, Facture, Reservation
+from .models import Message, Facture, Reservation, Commande
     
     
 
@@ -20,9 +20,19 @@ class FactureAdmin(admin.ModelAdmin):
     search_fields = ('idUser__email', 'numeroFact',)
     ordering = ('-dateCreation',)#Pour que les Factures s'affichent du plus recent à la plus vielle.
 
+
+class CommandeAdmin(admin.ModelAdmin):
+    list_display = ('numeroCom', 'idUser', 'montantCom', 'dateCreationCom', 'etatCommande','nombreProduit',)
+    readonly_fields = ('numeroCom',)
+    search_fields = ('idUser__email', 'numeroCom',)
+    ordering = ('-dateCreationCom',)#Pour que les Factures s'affichent du plus recent à la plus vielle.
+
+
+
 # -- mise en place des registres -- #
 
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Message)
 admin.site.register(Facture, FactureAdmin)
+admin.site.register(Commande, CommandeAdmin)
 
