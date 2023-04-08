@@ -7,7 +7,7 @@
   <nav>
     <ul>
       <li><a href="{% url 'home' %}">Accueil</a></li>
-      {% if user.is_authenticated %}
+      {% if user.is_authewnticated %}
         <li><a href="{% url 'profile' %}">Profile</a></li>
       {% endif %}
     </ul>
