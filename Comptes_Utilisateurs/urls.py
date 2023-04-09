@@ -1,12 +1,15 @@
 
-from django.urls import path
+from django.urls import path, re_path
 from Comptes_Utilisateurs import views
+from .views import login_view, register_user
+from django.contrib.auth.views import LogoutView
 
 
 urlpatterns = [
-    path('', views.home, name="home"),
-    path('Enregistrer', views.Enregistrer, name='Enregistrer'),
-    path('login', views.login, name='login'),
-    path('logout', views.logout_view, name='logout_view'),
-    path('profile', views.profile, name='profile')
+    path('', views.index, name="home"),
+    path('register/', register_user, name='register'),
+    path('login/', login_view, name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('profile', views.profile, name='profile'),
+    re_path(r'^.*\.*', views.pages, name='pages'),
 ]

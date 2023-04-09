@@ -107,3 +107,53 @@ class ProfileUpdateForm(forms.ModelForm):
             profile.save()
 
         return super().form_valid(form)
+
+#Juste pour voir
+    
+class LoginForm(forms.Form):
+    
+    email = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Email",
+                "class": "form-control"
+            }
+        ))
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Mot de passe",
+                "class": "form-control"
+            }
+        ))
+
+
+class SignUpForm(UserCreationForm):
+    
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                "placeholder": "Email",
+                "class": "form-control"
+            }
+        ))
+    
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Password",
+                "class": "form-control"
+            }
+        ))
+    
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Password check",
+                "class": "form-control"
+            }
+        ))
+
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'password1', 'password2')

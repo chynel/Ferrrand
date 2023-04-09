@@ -40,6 +40,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     sexe = models.CharField(choices=SEXE, default='Masculin', max_length=8)
     DateNaiss = models.DateField(verbose_name="Date de naissance", default=timezone.now)
     
+    QUESTION_CHOICES = [
+            ('Ville', "Le nom de la ville où vos parents se sont rencontrés"),
+            ('Film', "Le nom de votre film préféré"),
+            ('Marque', "Votre marque de vêtement préférée"),
+        ]
+    question = models.CharField(max_length=255, choices=QUESTION_CHOICES)
+    
     is_staff = models.BooleanField(default=False)
     is_client = models.BooleanField(default=True)
 
