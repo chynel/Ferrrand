@@ -16,9 +16,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 # Créez vos vues ici.
 
 
-"""
-User = get_user_model()
 
+User = get_user_model()
+"""
 def home(request):
     if request.user.is_authenticated:
         email = request.user.email
@@ -206,7 +206,7 @@ def profile(request):
 
 
 
-def reset_password(request):
+def changpassword(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         question = request.POST.get('question')
@@ -217,20 +217,20 @@ def reset_password(request):
         # Vérifier si l'e-mail existe dans la base de données
         try:
             user = User.objects.get(email=email)
-            profile = User.objects.get(user=user)
+            profil = User.objects.get(user=user)
         except:
             messages.error(request, 'Une erreur est survenue. Veuillez réessayer.')
-            return redirect('reset_password')
+            return redirect('changpassword')
 
         # Vérifier si la réponse à la question secrète est correcte
-        if profile.question != question or profile.answer != answer:
+        if profil.question != question or profil.answer != answer:
             messages.error(request, 'La réponse à la question secrète est incorrecte.')
-            return redirect('reset_password')
+            return redirect('changpassword')
 
         # Vérifier si les deux mots de passe correspondent
         if password1 != password2:
             messages.error(request, 'Les deux mots de passe ne correspondent pas.')
-            return redirect('reset_password')
+            return redirect('changpassword')
 
         # Réinitialiser le mot de passe
         user.set_password(password1)
@@ -240,4 +240,4 @@ def reset_password(request):
 
     # Afficher le formulaire de réinitialisation du mot de passe
     question_choices = User.QUESTION_CHOICES
-    return render(request, 'reset_password.html', {'question_choices': question_choices})
+    return render(request, 'changpassword.html', {'question_choices': question_choices})
