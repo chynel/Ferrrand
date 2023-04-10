@@ -42,11 +42,6 @@
                             {% csrf_token %}                    
 
                             <div class="input-group mb-3">
-                                {{ form.username }}
-                            </div>
-                            <span class="text-error">{{ form.username.errors }}</span>
-
-                            <div class="input-group mb-3">
                                 {{ form.email }}
                             </div>
                             <span class="text-error">{{ form.email.errors }}</span>

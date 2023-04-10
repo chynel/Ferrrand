@@ -211,6 +211,10 @@ def profile(request):
 
 
 def changpassword(request):
+    
+    msg = None
+    success = False
+    
     if request.method == 'POST':
         email = request.POST.get('email')
         question = request.POST.get('question')
@@ -239,9 +243,11 @@ def changpassword(request):
         # Réinitialiser le mot de passe
         user.set_password(password1)
         user.save()
-        messages.success(request, 'Le mot de passe a été réinitialisé avec succès.')
-        return redirect('login')
+        
+        msg = 'Le mot de passe a été réinitialisé avec succès.'
+        success = True
+            
 
     # Afficher le formulaire de réinitialisation du mot de passe
     question_choices = User.QUESTION_CHOICES
-    return render(request, 'changpassword.html', {'question_choices': question_choices})
+    return render(request, 'changpassword.html', {'question_choices': question_choices, "msg": msg, "success": success,})
