@@ -70,7 +70,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'noms', 'prenoms','sexe','DateNaiss']
+        fields = ['email', 'noms', 'prenoms','sexe','DateNaiss', 'question',]
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -153,7 +153,25 @@ class SignUpForm(UserCreationForm):
                 "class": "form-control"
             }
         ))
+      
+    question_choices = [        ('Ville', "Le nom de la ville où vos parents se sont rencontrés"),        ('Film', "Le nom de votre film préféré"),        ('Marque', "Votre marque de vêtement préférée"),        ('Autre', "Autre"),    ]
+
+    question = forms.CharField(
+        widget=forms.Select(choices=question_choices),
+        required=True,
+    )
+
+    reponse = forms.CharField(
+        label='Réponse',
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Réponse",
+                "class": "form-control"
+            }
+        ),
+        required=False,
+    )
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'password1', 'password2')
+        fields = ('email', 'password1', 'password2', 'question', 'reponse')

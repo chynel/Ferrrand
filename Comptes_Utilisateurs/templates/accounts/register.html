@@ -60,6 +60,21 @@
                                 {{ form.password2 }}
                             </div>
                             <span class="text-error">{{ form.password2.errors }}</span>
+
+
+                            <div class="form-group mb-3">
+                                <label for="question">Question secrète</label>
+                                <select name="question" class="form-control" id="question" required>
+                                  {% for choice in question_choices %}
+                                  <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                            <div class="form-group mb-3">
+                                <label for="answer">Réponse à la question secrète</label>
+                                <input type="text" name="reponse" class="form-control" id="reponse" required>
+                            </div> 
+
                             
                             <div class="form-group text-left">
                                 <div class="checkbox checkbox-fill d-inline">

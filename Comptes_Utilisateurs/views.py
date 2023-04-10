@@ -131,6 +131,8 @@ def register_user(request):
             form.save()
             email = form.cleaned_data.get("email")
             raw_password = form.cleaned_data.get("password1")
+            quest = form.cleaned_data.get("question")
+            rep = form.cleaned_data.get("reponse")
             user = auth.authenticate(email=email, password=raw_password)
 
             msg = 'Utilisateur créé avec succès.'
@@ -142,8 +144,10 @@ def register_user(request):
             msg = "Le formulaire n'est pas valide"
     else:
         form = SignUpForm()
-
-    return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
+        
+    
+    question_choices = User.QUESTION_CHOICES
+    return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success, 'question_choices': question_choices})
 
 
 
@@ -210,20 +214,20 @@ def changpassword(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         question = request.POST.get('question')
-        answer = request.POST.get('answer')
+        reponse = request.POST.get('reponse')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
 
         # Vérifier si l'e-mail existe dans la base de données
         try:
             user = User.objects.get(email=email)
-            profil = User.objects.get(user=user)
         except:
-            messages.error(request, 'Une erreur est survenue. Veuillez réessayer.')
+            messages.error(request, "Le mail entré n'existe pas. Veuillez réessayer.")
             return redirect('changpassword')
 
         # Vérifier si la réponse à la question secrète est correcte
-        if profil.question != question or profil.answer != answer:
+        
+        if user.question != question or user.reponse != reponse:
             messages.error(request, 'La réponse à la question secrète est incorrecte.')
             return redirect('changpassword')
 

@@ -44,8 +44,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             ('Ville', "Le nom de la ville où vos parents se sont rencontrés"),
             ('Film', "Le nom de votre film préféré"),
             ('Marque', "Votre marque de vêtement préférée"),
+            ('Autre', "Autre"),
         ]
-    question = models.CharField(max_length=255, choices=QUESTION_CHOICES)
+    question = models.CharField(max_length=100, choices=QUESTION_CHOICES)
+    reponse = models.CharField(max_length=100)
     
     is_staff = models.BooleanField(default=False)
     is_client = models.BooleanField(default=True)
