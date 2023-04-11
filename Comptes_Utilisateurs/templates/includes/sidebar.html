@@ -6,7 +6,7 @@
                 <div class="b-bg">
                     <i class="feather icon-trending-up"></i>
                 </div>
-                <span class="b-title">Datta Able</span>
+                <span class="b-title">MENU</span>
             </a>
             <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
         </div>
@@ -22,7 +22,7 @@
                 </li>
                 <li data-username="Profile Page" 
                     class="nav-item {% if 'profile' in segment %} active {% endif %}">
-                    <a href="/profile.html" class="nav-link">
+                    <a href = "{% url 'ProfileView' %}" class="nav-link">
                         <span class="pcoded-micon"><i class="feather icon-user"></i></span>
                             <span class="pcoded-mtext">Profile Page</span></a>
                 </li>                
@@ -61,13 +61,9 @@
                             class="feather icon-server"></i></span><span class="pcoded-mtext">Table</span></a>
                 </li>
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Chart & Maps</label>
+                    <label>Maps</label>
                 </li>
-                <li data-username="Charts Morris" 
-                    class="nav-item {% if 'chart-morris' in segment %} active {% endif %}">
-                    <a href="/chart-morris.html" class="nav-link "><span
-                        class="pcoded-micon"><i class="feather icon-pie-chart"></i></span><span class="pcoded-mtext">Chart</span></a>
-                </li>
+                
                 <li data-username="Maps Google" 
                     class="nav-item {% if 'map-google' in segment %} active {% endif %}">
                     <a href="/map-google.html" class="nav-link "><span
@@ -76,15 +72,7 @@
                 <li class="nav-item pcoded-menu-caption">
                     <label>Pages</label>
                 </li>
-                <li data-username="Authentication Sign up Sign in reset password Change password Personal information profile settings map form subscribe"
-                    class="nav-item pcoded-hasmenu">
-                    <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-lock"></i></span><span
-                            class="pcoded-mtext">Authentication</span></a>
-                    <ul class="pcoded-submenu">
-                        <li class=""><a href="/register.html" class="" target="_blank">Sign UP</a></li>
-                        <li class=""><a href="/login.html" class="" target="_blank">Sign IN</a></li>
-                    </ul>
-                </li>
+                
 
                 <li data-username="Sample Page" class="nav-item"><a href="/page-blank.html" class="nav-link"><span
                         class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span class="pcoded-mtext">Sample page</span></a>

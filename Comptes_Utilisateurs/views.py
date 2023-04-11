@@ -187,18 +187,24 @@ def pages(request):
         html_template = loader.get_template('home/page-500.html')
         return HttpResponse(html_template.render(context, request))
     
-
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
 
 @login_required(login_url="/login/")
-def profile(request):
+def ProfileView(request):
+    msg = None
+    success = False
+    
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, 'Votre compte a été mis à jour !')
+            msg = 'Votre compte a été mis à jour !'
             return redirect('profile')
+        else:
+            msg = 'Il y a des erreurs dans le formulaire.'
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)
@@ -206,9 +212,8 @@ def profile(request):
         'user_form': user_form,
         'profile_form': profile_form
     }
-    return render(request, 'profile.html', context)
-
-
+    return render(request, 'profile.html',{"msg": msg, "success": success,})
+    
 
 def changpassword(request):
     
@@ -226,18 +231,18 @@ def changpassword(request):
         try:
             user = User.objects.get(email=email)
         except:
-            messages.error(request, "Le mail entré n'existe pas. Veuillez réessayer.")
+            msg = "Le mail entré n'existe pas. Veuillez réessayer."
             return redirect('changpassword')
 
         # Vérifier si la réponse à la question secrète est correcte
         
         if user.question != question or user.reponse != reponse:
-            messages.error(request, 'La réponse à la question secrète est incorrecte.')
+            msg = 'La réponse à la question secrète est incorrecte.'
             return redirect('changpassword')
 
         # Vérifier si les deux mots de passe correspondent
         if password1 != password2:
-            messages.error(request, 'Les deux mots de passe ne correspondent pas.')
+            msg = 'Les deux mots de passe ne correspondent pas.'
             return redirect('changpassword')
 
         # Réinitialiser le mot de passe
