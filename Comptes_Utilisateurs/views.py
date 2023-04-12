@@ -194,21 +194,35 @@ from django.views.generic.edit import FormView
 def ProfileView(request):
     msg = None
     success = False
-    
+
     if request.method == 'POST':
-        user_form = UserUpdateForm(request.POST, instance=request.user)
-        if user_form.is_valid():
-            user_form.save()
-            msg = 'Votre compte a été mis à jour !'
-            return redirect('profile')
+        if request.user.is_authenticated:
+            user_form = UserUpdateForm(request.POST, instance=request.user)
+            print("io")
+            if user_form.is_valid():
+                user = user_form.save(commit=False)
+                print("io")
+
+                if user.id:
+                    # Le formulaire est utilisé pour mettre à jour un utilisateur existant.
+                    user.save()
+                    print("io")
+                else:
+                    # Le formulaire est utilisé pour créer un nouvel utilisateur.
+                    user = User.objects.create_user(
+                        username=user.username,
+                        password=user.password
+                    )
+                msg = 'Votre compte a été mis à jour !'
+                return redirect('profile')
         else:
-            msg = 'Il y a des erreurs dans le formulaire.'
+            # L'utilisateur n'est pas authentifié, rediriger vers la page de connexion.
+            return redirect('login')
     else:
         user_form = UserUpdateForm(instance=request.user)
-    context = {
-        'user_form': user_form,
-    }
-    return render(request, 'profile.html',{"msg": msg, "success": success,})
+    return render(request, 'profile.html', {"user_form": user_form, "msg": msg, "success": success,})
+
+
     
 
 def changpassword(request):

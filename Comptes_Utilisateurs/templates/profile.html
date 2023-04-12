@@ -37,19 +37,26 @@
 
                                             {% csrf_token %}                    
 
-                                        <!--div class="card-block">
+                                        <div class="card-block">
                                             <div class="row">
-                                                <div-- class="col-sm-7 mb-4">
+                                                <div class="col-sm-7 mb-4">
                                                     <div class="form-group">
                                                         <label for="id_email">Adresse Email</label>
                                                         <input type="email" class="form-control" id="id_email" name="email" value="{{ user.email }}">
                                                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                                                     </div>
-                                                </div-->
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    
+                                                </div>
+
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
                                                         <label for="fn">Nom(s)</label>
                                                         <input type="text" class="form-control" id="fn" name="noms" value="{{ user.noms }}">
+                                                        {{ user_form.noms }}
+                                                        
                                                     </div>
                                                 </div>
                                                 <!--div class="col-sm-6 mb-4">
@@ -77,7 +84,7 @@
 
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
-                                                        <button type="submit" name="profile" class="btn btn-primary shadow-2 mb-4">Mettre à jour</button>
+                                                        <button type="submit" name="ProfileView" class="btn btn-primary shadow-2 mb-4">Mettre à jour</button>
                                                     </div>
                                                 </div>
 

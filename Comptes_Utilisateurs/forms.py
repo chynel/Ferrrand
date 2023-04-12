@@ -67,10 +67,12 @@ class ProfileCreationForm(forms.ModelForm):
     
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
+    noms = forms.CharField()
+    
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'noms', 'prenoms','sexe','DateNaiss', 'question',]
+        fields = ['email', 'noms', 'prenoms','sexe','DateNaiss',]
 
     def clean_email(self):
         email = self.cleaned_data.get('email')

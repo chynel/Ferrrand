@@ -121,11 +121,19 @@
                         </div>
                         <ul class="pro-body">
                             <li><a href="{% url 'ProfileView' %}" class="dropdown-item"><i class="feather icon-user"></i>
-                                Profile</a></li>
+                                Profile</a>
+                            </li>
+                            <li data-username="Password Page" 
+                                class="nav-item {% if 'profile' in segment %} active {% endif %}">
+                                <a href = "{% url 'changpassword' %}" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-lock auth-icon"></i></span>
+                                <span class="pcoded-mtext">Modifier Mot de Passe</span></a>
+                            </li>
                             <li><a href="{% url 'logout' %}" class="dropdown-item">
-                                <i class="feather icon-lock"></i> Se déconnecter</a>
+                                <i class="feather icon-power"></i> Se déconnecter</a>
                             </li>
                         </ul>
+ 
                     </div>
                 </div>
             </li>
