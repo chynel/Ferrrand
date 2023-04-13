@@ -66,8 +66,55 @@ class ProfileCreationForm(forms.ModelForm):
 
     
 class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-    noms = forms.CharField()
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                "placeholder": "Email",
+                "class": "form-control",
+                "readonly": True,
+            }
+        ),
+        required=False
+    )
+    
+    noms = forms.CharField(
+        label='Nom(s)',
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Nom(s)",
+                "class": "form-control"
+            }
+        ),
+        required=False
+    )
+    
+    prenoms = forms.CharField(
+        label='Prénom(s)',
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Prénom(s)",
+                "class": "form-control"
+            }
+        ),
+        required=False
+    )
+    
+    sexe_choices = [('MASCULIN', 'Masculin'), ('FEMININ', 'Féminin'), ('PAS_DE_SEXE', 'Pas de sexe')]
+    sexe = forms.ChoiceField(
+        choices=sexe_choices, 
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=False)
+    
+    
+    DateNaiss = forms.DateField(
+        widget=forms.DateInput(
+            attrs={
+                "placeholder": "Date de naissance",
+                "class": "form-control"
+            }
+        ),
+        required=False
+    )
     
 
     class Meta:
@@ -76,15 +123,34 @@ class UserUpdateForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if CustomUser.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+        if email and CustomUser.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
             raise ValidationError('Cet e-mail est déjà utilisé.')
         return email
 
 
-class ProfileUpdateForm(forms.ModelForm):
-    phone = forms.CharField(max_length=15, required=False)
-    image = forms.ImageField(required=False, widget=forms.FileInput())
 
+
+class ProfileUpdateForm(forms.ModelForm):
+    image = forms.ImageField(
+        label='Image',
+        widget=forms.ClearableFileInput(
+            attrs={
+                "class": "form-control"
+            }
+        ),
+        required=False,
+    )
+
+    phone = forms.CharField(
+        label='Téléphone',
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Téléphone",
+                "class": "form-control"
+            }
+        ),
+        required=False,
+    )
 
     class Meta:
         model = Profile
@@ -95,20 +161,19 @@ class ProfileUpdateForm(forms.ModelForm):
         if phone and Profile.objects.filter(phone=phone).exclude(user=self.instance.user).exists():
             raise ValidationError('Ce numéro de téléphone est déjà utilisé.')
         return phone
-    
-    def form_valid(self, form):
-        # enregistrer les données de formulaire
-        profile = form.save(commit=False)
-        profile.user = self.request.user
-        profile.save()
 
-        # enregistrer l'image téléchargée
-        image = form.cleaned_data.get('image')
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        profile.user = self.instance.user
+        if commit:
+            profile.save()
+
+        image = self.cleaned_data.get('image')
         if image:
             profile.image = image
             profile.save()
 
-        return super().form_valid(form)
+        return profile
 
 #Juste pour voir
     
@@ -151,7 +216,7 @@ class SignUpForm(UserCreationForm):
     password2 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                "placeholder": "Password check",
+                "placeholder": "Vérification Mot de passe",
                 "class": "form-control"
             }
         ))

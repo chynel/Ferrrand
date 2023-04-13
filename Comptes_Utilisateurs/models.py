@@ -29,15 +29,12 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     """Variables pour définir les champs du combo sexe"""
-    MASCULIN='masculin'
-    FEMININ='feminin'
-    PAS_DE_SEXE = 'Neutre'
-    SEXE=[(MASCULIN,'Masculin'),(FEMININ,'Feminin'),(PAS_DE_SEXE,'Pas de sexe'),]
+    SEXE_CHOICES = [    ('MASCULIN', 'Masculin'),    ('FEMININ', 'Féminin'),    ('PAS_DE_SEXE', 'Pas de sexe'),]
     
     email = models.EmailField(unique=True)
     noms = models.CharField(verbose_name='Nom(s)', max_length=100, default='Pas de nom(s)')
     prenoms = models.CharField(verbose_name='Prénom(s)', max_length=80, default='Pas de prénom(s)')
-    sexe = models.CharField(choices=SEXE, default='Masculin', max_length=8)
+    sexe = models.CharField(choices=SEXE_CHOICES, max_length=100)
     DateNaiss = models.DateField(verbose_name="Date de naissance", default=timezone.now)
     
     QUESTION_CHOICES = [

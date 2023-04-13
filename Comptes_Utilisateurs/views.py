@@ -11,6 +11,11 @@ from django import template
 from django.urls import reverse
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
+from .models import Profile
 
 
 # Créez vos vues ici.
@@ -187,8 +192,7 @@ def pages(request):
         html_template = loader.get_template('home/page-500.html')
         return HttpResponse(html_template.render(context, request))
     
-from django.urls import reverse_lazy
-from django.views.generic.edit import FormView
+
 
 @login_required(login_url="/login/")
 def ProfileView(request):
@@ -196,34 +200,44 @@ def ProfileView(request):
     success = False
 
     if request.method == 'POST':
-        if request.user.is_authenticated:
-            user_form = UserUpdateForm(request.POST, instance=request.user)
-            print("io")
-            if user_form.is_valid():
-                user = user_form.save(commit=False)
-                print("io")
-
-                if user.id:
-                    # Le formulaire est utilisé pour mettre à jour un utilisateur existant.
-                    user.save()
-                    print("io")
-                else:
-                    # Le formulaire est utilisé pour créer un nouvel utilisateur.
-                    user = User.objects.create_user(
-                        username=user.username,
-                        password=user.password
-                    )
-                msg = 'Votre compte a été mis à jour !'
-                return redirect('profile')
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
+            user.save()
+            msg = 'Votre compte a été mis à jour !'
+            success = True
         else:
-            # L'utilisateur n'est pas authentifié, rediriger vers la page de connexion.
-            return redirect('login')
+            msg = 'Veuillez corriger les erreurs ci-dessous.'
     else:
         user_form = UserUpdateForm(instance=request.user)
-    return render(request, 'profile.html', {"user_form": user_form, "msg": msg, "success": success,})
+    return render(request, 'home/profile.html', {"user_form": user_form, "msg": msg, "success": success})
 
 
-    
+
+
+@login_required
+def ProfileUpdateView(request):
+    msg = None
+    success = False
+    profile = request.user.profile
+
+    if request.method == 'POST':
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        if profile_form.is_valid():
+            profile = profile_form.save(commit=False)
+            profile.save()
+            msg = 'Votre photo et numéro de téléphone ont été mis à jour !'
+            success = True
+        else:
+            msg = 'Veuillez corriger les erreurs ci-dessous.'
+    else:
+        initial_data = {'phone': profile.phone, 'image': profile.image}
+        profile_form = ProfileUpdateForm(instance=profile, initial=initial_data)
+
+    return render(request, 'home/profile.html', {"profile_form": profile_form, "msg": msg, "success": success})
+
+
+
 
 def changpassword(request):
     
