@@ -5,7 +5,6 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import CustomUser, Profile
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.core.exceptions import ValidationError
 
 
     
@@ -123,8 +122,8 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['email', 'noms', 'prenoms','sexe','DateNaiss',]
 
     def clean_email(self):
-        email = self.cleaned_data['email']
-        if CustomUser.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+        email = self.cleaned_data.get('email')
+        if email and CustomUser.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
             raise ValidationError('Cet e-mail est déjà utilisé.')
         return email
 
@@ -159,8 +158,8 @@ class ProfileUpdateForm(forms.ModelForm):
 
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
-        if phone and Profile.objects.filter(phone=phone).exclude(user=self.instance.user).exists():
-            raise ValidationError('Ce numéro de téléphone est déjà utilisé.')
+        if Profile.objects.filter(phone=phone).exclude(user=self.instance.user).exists():
+            print('Ce numéro de téléphone est déjà utilisé.')
         return phone
 
     def save(self, commit=True):

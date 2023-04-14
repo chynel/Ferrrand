@@ -1,7 +1,7 @@
 
 from django.urls import path, re_path
 from Comptes_Utilisateurs import views
-from .views import login_view, register_user, changpassword, ProfileView, ProfileUpdateView
+from .views import login_view, register_user, changpassword, ProfileView
 from django.contrib.auth.views import LogoutView
 
 
@@ -11,7 +11,6 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('ProfileView/', ProfileView, name='ProfileView'),
-    path('ProfileUpdateView/', ProfileUpdateView, name='ProfileUpdateView'),
     path('changpassword/', views.changpassword, name='changpassword'),
     re_path(r'^.*\.*', views.pages, name='pages'),
 ]

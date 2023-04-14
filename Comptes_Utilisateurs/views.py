@@ -124,44 +124,29 @@ def ProfileView(request):
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save(commit=False)
-            user.save()
-            profile_form.save()
-            msg = 'Votre compte a été mis à jour !'
-            success = True
+
+        if profile_form.is_valid():
+            # Vérifier si le numéro de téléphone est unique
+            phone_number = profile_form.cleaned_data['phone']
+            if User.objects.exclude(pk=request.user.pk).filter(profile__phone=phone_number).exists():
+                # Numéro de téléphone déjà utilisé
+                msg = 'Ce numéro de téléphone est déjà utilisé.'
+            else:
+                # Enregistrer les modifications
+                if user_form.is_valid():
+                    user = user_form.save(commit=False)
+                    user.save()
+                    profile_form.save()
+                    msg = 'Votre compte a été mis à jour !'
+                    success = True
+                else:
+                    msg = 'Veuillez corriger les erreurs ci-dessous.'
         else:
             msg = 'Veuillez corriger les erreurs ci-dessous.'
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)
     return render(request, 'home/profile.html', {"user_form": user_form, "profile_form": profile_form, "msg": msg, "success": success})
-
-
-
-
-@login_required
-def ProfileUpdateView(request):
-    msg = None
-    success = False
-    profile = request.user.profile
-
-    if request.method == 'POST':
-        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
-        if profile_form.is_valid():
-            profile = profile_form.save(commit=False)
-            profile.save()
-            msg = 'Votre photo et numéro de téléphone ont été mis à jour !'
-            success = True
-        else:
-            msg = 'Veuillez corriger les erreurs ci-dessous.'
-    else:
-        initial_data = {'phone': profile.phone, 'image': profile.image}
-        profile_form = ProfileUpdateForm(instance=profile, initial=initial_data)
-
-    return render(request, 'home/profile.html', {"profile_form": profile_form, "msg": msg, "success": success})
-
-
 
 
 
