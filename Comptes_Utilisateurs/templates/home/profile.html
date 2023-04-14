@@ -7,143 +7,131 @@
 
 {% block content %}
 
-    <!-- [ Main Content ] start -->
-    <div class="pcoded-main-container">
-        <div class="pcoded-wrapper">
-
-            <div class="pcoded-content">
-                <div class="pcoded-inner-content">
-                    <div class="main-body">
-                        <div class="page-wrapper">
-                            <!-- [ Main Content ] start -->
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5>Changer ou ajouter des Infos vous concernant</h5>
-                                        </div>
-
-                                        <center>
-                                        <span class="mb-0 text-muted">
-                                            {% if msg %}
-                                                <span class="text-danger">{{ msg | safe }}</span>
-                                            {% else %}
-                                                Entrer les informations
-                                            {% endif %} 
-                                        </span>
-                                        </center>
-
-                                        <form method="POST">
-                                            {% csrf_token %}
-
-                                            <div class="card-block">
-                                                <div class="row">
-                                                    <div class="col-sm-7 mb-4">
-                                                        <div class="form-group">
-                                                            <label for="{{ user_form.email.id_for_label }}">Adresse Email</label>
-                                                            {{ user_form.email }}
-                                                            <small id="email" name="email" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 mb-4">
-                                                        <div class="form-group">
-                                                            <label for="{{ user_form.noms.id_for_label }}">Nom(s)</label>
-                                                            {{ user_form.noms }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 mb-4">
-                                                        <div class="form-group">
-                                                            <label for="{{ user_form.prenoms.id_for_label }}">Last Name</label>
-                                                            {{ user_form.prenoms }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 mb-4">
-                                                        <div class="form-group">
-                                                          <label for="{{ user_form.sexe.id_for_label }}">Sexe</label>
-                                                          {{ user_form.sexe }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 mb-4">
-                                                        <div class="form-group">
-                                                          <label for="{{ user_form.DateNaiss.id_for_label }}">Date de naissance</label>
-                                                          {{ user_form.DateNaiss }}
-                                                        </div>
-                                                    </div>
-
-                                    
-                                                      
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-6 mb-4">
-                                                <div class="form-group">
-                                                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                                                </div>
-                                              </div>
-                                        </form>
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Changer ou ajouter des Infos vous concernant</h5>
                                     </div>
-                                </div>
-                            
-
-
-                                <!-- Partie formulaire photo et profile -->
-                                <div class="col-sm-4">
-                                    <div class="card">
+                                    <center>
+                                        <span class="mb-0 text-muted"></span>
+                                        {% if msg %}
+                                            <span class="text-danger">{{ msg | safe }}</span>
+                                        {% else %}
+                                            Entrer les informations
+                                        {% endif %} 
+                                            </span>
+                                    </center>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
                                         <div class="card-block">
-                                            <div class="d-flex align-items-center justify-content-center flex-column">
-                                                <div class="w-50 p-3">
-                                                    <img src="https://via.placeholder.com/500" alt="profile image"
-                                                        class="img-fluid rounded-circle">
+                                            <div class="row">
+
+                                                <div class="col-sm-7 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ user_form.email.id_for_label }}">Adresse Email</label>
+                                                        {{ user_form.email }}
+                                                        <small id="email" name="email" style="color: red; font-size: 12px;">Attention !!! Cette adresse est unique et ne peut être modifier</small>
+                                                    </div>
                                                 </div>
-                                                <div class="text-center">
-                                                    <h4 class="font-weight-bold h6">{{ user.email }}</h4>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ user_form.noms.id_for_label }}">Nom(s)</label>
+                                                        {{ user_form.noms }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ user_form.prenoms.id_for_label }}">Last Name</label>
+                                                        {{ user_form.prenoms }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ user_form.sexe.id_for_label }}">Sexe</label>
+                                                        {{ user_form.sexe }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ user_form.DateNaiss.id_for_label }}">Date de naissance</label>
+                                                        {{ user_form.DateNaiss }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ profile_form.phone.id_for_label }}">Numéro de Téléphone</label>
+                                                        {{ profile_form.phone }}
+                                                        <span id="email" name="email" style="color: red; font-size: 13px;">Par defaut, votre numéro n'est pas enregistré. Apres enregistrement, elle devient unique.</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-7 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ profile_form.image.id_for_label }}">Image de profile</label>
+                                                        {{ profile_form.image }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- Partie formulaire photo et profile -->
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="d-flex align-items-center justify-content-center flex-column">
+                                            <div class="w-50 p-3">
+                                                <img src="https://via.placeholder.com/500" alt="profile image"
+                                                    class="img-fluid rounded-circle">
+                                            </div>
+                                            <div class="text-center">
+                                                <h4 class="font-weight-bold h6">{{ user.email }}</h4>
+                                                <h7 class="font-weight-bold h6"><i style="font-size: 11px;">{{ user.noms }}</i><i style="font-size: 11px;"> {{ user.noms }}</i></h7>
                                                     <p class="font-italic text-muted">ManagHotels.com</p>
-                                                </div>
                                             </div>
-
-                                            <div class="small font-weight-light mt-4 text-center text-muted">
-                                                <form method="POST" enctype="multipart/form-data">
-                                                    {% csrf_token %}
-                                                    <div class="form-group">
-                                                        <label for="{{ profile_form.phone.id_for_label }}">Téléphone</label>
-                                                        <input type="text" name="{{ profile_form.phone.name }}" id="{{ profile_form.phone.id_for_label }}" class="form-control" value="{{ profile_form.phone.value }}" placeholder="{{ profile_form.phone.label }}">
-                                                    </div>
-                                                    
-                                                    <div class="form-group">
-                                                        <label for="{{ profile_form.image.id_for_label }}">Photo de profil</label>
-                                                        <input type="file" name="{{ profile_form.image.name }}" id="{{ profile_form.image.id_for_label }}" class="form-control">
-                                                    </div>
-                                                    
-                                                
-                                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                                                </form>
-                                                
-                                                
-                                            </div>
-                                            <div class="d-flex justify-content-center align-items-center">
-                                                <a href="#" class="h6 text-muted d-block m-1"><i
-                                                        class="icon feather icon-facebook"></i></a>
-                                                <a href="#" class="h6 text-muted d-block m-1"><i
-                                                        class="icon feather icon-twitter"></i></a>
-                                                <a href="#" class="h6 text-muted d-block m-1"><i
-                                                        class="icon feather icon-instagram"></i></a>
-
-                                            </div>
+                                        </div>
+                                        <div class="small font-weight-light mt-4 text-center text-muted">
+                                        </div>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <p class="mb-2 text-muted">
+                                                &copy; <a target="_blank" href="https://www.facebook.com/chynel.soki">Ferrand SOKI</a> 
+                                                - <a target="_blank" href="https://www.linkedin.com/in/ferrand-soki/">Django Developpeur</a>.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Fin Formulaire profile et photo-->
-
                             </div>
-                            <!-- [ Main Content ] end -->
+                            <!-- Fin Formulaire profile et photo-->
                         </div>
+                        <!-- [ Main Content ] end -->
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
-    <!-- [ Main Content ] end -->
+</div>
+<!-- [ Main Content ] end -->
 
 {% endblock content %}
 

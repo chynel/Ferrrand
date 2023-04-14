@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import CustomUser, Profile
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.core.exceptions import ValidationError
 
 
     
@@ -122,8 +123,8 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['email', 'noms', 'prenoms','sexe','DateNaiss',]
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if email and CustomUser.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+        email = self.cleaned_data['email']
+        if CustomUser.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
             raise ValidationError('Cet e-mail est déjà utilisé.')
         return email
 
@@ -163,14 +164,14 @@ class ProfileUpdateForm(forms.ModelForm):
         return phone
 
     def save(self, commit=True):
-        profile = super().save(commit=False)
+        profile = super().save()
         profile.user = self.instance.user
-        if commit:
-            profile.save()
 
         image = self.cleaned_data.get('image')
         if image:
             profile.image = image
+
+        if commit:
             profile.save()
 
         return profile
@@ -221,7 +222,7 @@ class SignUpForm(UserCreationForm):
             }
         ))
       
-    question_choices = [        ('Ville', "Le nom de la ville où vos parents se sont rencontrés"),        ('Film', "Le nom de votre film préféré"),        ('Marque', "Votre marque de vêtement préférée"),        ('Autre', "Autre"),    ]
+    question_choices = [('Ville', "Le nom de la ville où vos parents se sont rencontrés"), ('Film', "Le nom de votre film préféré"), ('Marque', "Votre marque de vêtement préférée"), ('Autre', "Autre"),]
 
     question = forms.CharField(
         widget=forms.Select(choices=question_choices),
