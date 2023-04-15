@@ -163,9 +163,10 @@ class ProfileUpdateForm(forms.ModelForm):
         return phone
 
     def save(self, commit=True):
-        profile = super().save()
+        profile = super().save(commit=False)
         profile.user = self.instance.user
 
+        # enregistrer l'image téléchargée
         image = self.cleaned_data.get('image')
         if image:
             profile.image = image

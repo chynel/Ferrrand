@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% load static %}
 
 {% block title %} Profile {% endblock %} 
 
@@ -19,7 +20,7 @@
                             <div class="col-sm-8">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Changer ou ajouter des Infos vous concernant</h5>
+                                        <h5>Changer ou ajouter des Infos vous concernant (Respecter s'il vous plait les règles de remplissage)</h5>
                                     </div>
                                     <center>
                                         <span class="mb-0 text-muted"></span>
@@ -68,6 +69,7 @@
                                                     <div class="form-group">
                                                         <label for="{{ user_form.DateNaiss.id_for_label }}">Date de naissance</label>
                                                         {{ user_form.DateNaiss }}
+                                                        <small id="email" name="email" style="color: red; font-size: 12px;">Le format de la date est celui-ci: JJ/MM/AAAA</small>
                                                     </div>
                                                 </div>
 
@@ -75,7 +77,7 @@
                                                     <div class="form-group">
                                                         <label for="{{ profile_form.phone.id_for_label }}">Numéro de Téléphone</label>
                                                         {{ profile_form.phone }}
-                                                        <span id="email" name="email" style="color: red; font-size: 13px;">Par defaut, votre numéro n'est pas enregistré. Apres enregistrement, elle devient unique.</span>
+                                                        <span id="email" name="email" style="color: red; font-size: 13px;">Par defaut, votre numéro n'est pas enregistré. Il ne peut contenir que 15 caractères et apres enregistrement, il devient unique.</span>
                                                     </div>
                                                 </div>
 
@@ -102,8 +104,12 @@
                                     <div class="card-block">
                                         <div class="d-flex align-items-center justify-content-center flex-column">
                                             <div class="w-50 p-3">
-                                                <img src="https://via.placeholder.com/500" alt="profile image"
-                                                    class="img-fluid rounded-circle">
+                                                {% if user.profile.image %}
+    <img src="{{ user.profile.image.url }}" alt="profile image" class="img-fluid rounded-circle">
+{% else %}
+    <img src="{% static 'img/default_profile_image.png' %}" alt="default profile image" class="img-fluid rounded-circle">
+{% endif %}
+
                                             </div>
                                             <div class="text-center">
                                                 <h4 class="font-weight-bold h6">{{ user.email }}</h4>
