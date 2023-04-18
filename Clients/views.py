@@ -1,61 +1,41 @@
-# -- encodage du fichier -- #
-#coding: utf-8
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from .forms import MessageForm
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from .models import Message
 
-# -- importations des modules -- #
-from django.shortcuts import get_object_or_404, render
-from Equipement.models import Equipement
-from .models import Client, Message
-from django.contrib import messages
 
-"""# -- définition des vues de l'application accueil -- #
-def accueil(request):
-    # -- recuperation des équipements -- #
-    listeEquipements = Equipement.objects.order_by('-datePublication')[:4]
 
-    # -- retourne le template index.html -- #
-    return render(request, 'index.html', {'listeEquipements' : listeEquipements})
+User = get_user_model()
 
-def contacter(request):
-    # -- vérification de request -- #
-    if request.method == "POST":
-        # -- mise en place de la liste de données -- #
-        listeDonnees = [request.POST.get('nom'), request.POST.get('tel'), request.POST.get('email'), request.POST.get('sujet'), request.POST.get('message')]
-        
-        try:
-            # -- recuperation d'un internaute -- #
-            clientExistant = Clients.objects.get(nom = listeDonnees[0], numeroTelephone = listeDonnees[1], adresseMail = listeDonnees[2])
-        
-            # -- vérification -- #
-            if clientExistant.nom == listeDonnees[0]:
-                # -- sauvegarde du message -- #
-                message = Messages(sujet = listeDonnees[3], message = listeDonnees[4], idClients = clientExistant)
-                message.save()
 
-                # -- renvoi un message de succès -- #
-                messages.success(request, "Votre message a été envoyer avec succès !!")
-            else:
-                # -- sauvegarde du message et du client -- #
-                client = Clients(nom = listeDonnees[0], numeroTelephone = listeDonnees[1], adresseMail = listeDonnees[2])
-                client.save()
-
-                message = Messages(sujet = listeDonnees[3], message = listeDonnees[4], idclient = client)
-                message.save()
-
-                # -- renvoi un message de succès -- #
-                messages.success(request, "Votre message a été envoyer avec succès !!")
-        except:
-            # -- sauvegarde du message et du client -- #
-            client = Clients(nom = listeDonnees[0], numeroTelephone = listeDonnees[1], adresseMail = listeDonnees[2])
-            client.save()
-
-            message = Messages(sujet = listeDonnees[3], message = listeDonnees[4], idClients = client)
+@login_required
+def creer_message(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.idUser = request.user
+            message.dateEnvoi = timezone.now()
             message.save()
-
-            # -- renvoi un message de succès -- #
-            messages.success(request, "Votre message a été envoyer avec succès !!")
-
-        # -- retourne le template contacter.html -- #
-        return render(request, 'contacter.html')
+            return redirect('messages_liste')
     else:
-        # -- retourne le template contacter.html -- #
-        return render(request, 'contacter.html')"""
+        form = MessageForm()
+    return render(request, 'creer_message.html', {'form': form})
+
+def messages_liste(request):
+    if request.method == 'POST' and 'submit' in request.POST:
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.idUser = request.user
+            message.dateEnvoi = timezone.now()
+            message.save()
+            return redirect('messages_liste')
+    else:
+        form = MessageForm()
+
+    messages = Message.objects.all()
+    context = {'messages': messages, 'form': form}
+    return render(request, 'messages_liste.html', context)

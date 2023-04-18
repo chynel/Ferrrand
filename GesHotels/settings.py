@@ -63,11 +63,12 @@ ROOT_URLCONF = 'GesHotels.urls'
 LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
 LOGOUT_REDIRECT_URL = "home"  # Route defined in home/urls.py
 TEMPLATE_DIR = os.path.join(CORE_DIR, "Comptes_Utilisateurs/templates")  # ROOT dir for templates
+CLIENTS_TEMPLATE_DIR = os.path.join(CORE_DIR, "Clients/templates")
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR],
+        'DIRS': [TEMPLATE_DIR, CLIENTS_TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -148,5 +149,7 @@ MEDIA_URL = 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+#SESSION_COOKIE_AGE = 300 # Durée de vie de la session de 5 minutes
 #############################################################
 #############################################################

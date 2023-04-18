@@ -1,0 +1,19 @@
+{% for message in messages %}
+  <div>
+    <p><strong>Sujet:</strong> {{ message.sujet }}</p>
+    <p><strong>Message:</strong> {{ message.message }}</p>
+    <p><strong>Date d'envoi:</strong> {{ message.dateEnvoi }}</p>
+    <p><strong>Utilisateur:</strong> {{ message.idUser }}</p>
+  </div>
+{% endfor %}
+
+<hr>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <div class="form-group">
+    <button type="submit" name="submit" class="btn btn-primary">Envoyer</button>
+    <a href="{% url 'messages_liste' %}" class="btn btn-secondary">Annuler</a>
+  </div>
+</form>

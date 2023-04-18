@@ -1,13 +1,15 @@
 {% extends "layouts/base.html" %}
+{% load static %}
 
 {% block title %} Dashboard {% endblock %} 
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
+{% block script %}
+  <script type="text/javascript" src="{% static 'session.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-
-    <!-- [ Main Content ] start -->
     <div class="pcoded-main-container">
         <div class="pcoded-wrapper">
 
