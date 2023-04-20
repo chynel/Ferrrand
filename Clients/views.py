@@ -17,12 +17,14 @@ def creer_message(request):
         if form.is_valid():
             message = form.save(commit=False)
             message.idUser = request.user
-            message.dateEnvoi = timezone.now()
             message.save()
             return redirect('messages_liste')
     else:
-        form = MessageForm()
-    return render(request, 'creer_message.html', {'form': form})
+        form = MessageForm(initial={'idUser': request.user})
+    return render(request, 'form_elements.html', {'form': form})
+
+    
+    
 
 def messages_liste(request):
     if request.method == 'POST' and 'submit' in request.POST:

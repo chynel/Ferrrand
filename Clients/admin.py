@@ -7,6 +7,10 @@ from .models import Message, Facture, Reservation, Commande
     
     
 
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('sujet', 'idUser', 'message')
+    search_fields = ('idUser__email')
+
 class ReservationAdmin(admin.ModelAdmin):
     list_display = ('numeroRes', 'idUser', 'idService', 'dateReservation', 'heureReservation',)
     readonly_fields = ('numeroRes',)

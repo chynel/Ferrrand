@@ -23,15 +23,13 @@ class Message(models.Model):
     """
 
     # -- mise en place des attributs de la classe messages -- #
-    sujet = models.CharField(max_length = 75, null =  False)
-    message = models.TextField(null =  False)
-    dateEnvoi = models.DateTimeField(auto_now = True, null = False, )
-    idUser = models.ForeignKey(User, verbose_name='Mail Client', null=True, on_delete = models.SET_NULL)
+    sujet = models.CharField(max_length=75, null=False)
+    message = models.TextField(null=False)
+    dateEnvoi = models.DateTimeField(auto_now=True, null=False)
+    idUser = models.ForeignKey(User, verbose_name='Mail Client', null=True, on_delete=models.SET_NULL)
 
-
-    # -- mise en place de la methode __str__ -- #
     def __str__(self):
-        return f"Sujet : {self.sujet}" 
+        return self.sujet
 
 
 class Reservation(models.Model):

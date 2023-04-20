@@ -5,6 +5,7 @@ from .views import login_view, register_user, changpassword, ProfileView
 from django.contrib.auth.views import LogoutView
 
 
+
 urlpatterns = [
     path('', views.index, name="home"),
     path('register/', register_user, name='register'),

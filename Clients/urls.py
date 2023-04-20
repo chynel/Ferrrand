@@ -7,5 +7,5 @@ from .views import creer_message
 
 # -- définition des urls de l'application Equipement -- #
 urlpatterns = [
-    path('', creer_message, name = "creer_message"),
+    path('creer_message/', creer_message, name = "creer_message"),
 ]

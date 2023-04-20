@@ -1,0 +1,145 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} Profile {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Changer ou ajouter des Infos vous concernant (Respecter s'il vous plait les règles de remplissage)</h5>
+                                    </div>
+                                    <center>
+                                        <span class="mb-0 text-muted"></span>
+                                        {% if msg %}
+                                            <span class="text-danger">{{ msg | safe }}</span>
+                                        {% else %}
+                                            Entrer les informations
+                                        {% endif %} 
+                                            </span>
+                                    </center>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="card-block">
+                                            <div class="row">
+
+                                                <div class="col-sm-7 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ user_form.email.id_for_label }}">Adresse Email</label>
+                                                        {{ user_form.email }}
+                                                        <small id="email" name="email" style="color: red; font-size: 12px;">Attention !!! Cette adresse est unique et ne peut être modifier</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ user_form.noms.id_for_label }}">Nom(s)</label>
+                                                        {{ user_form.noms }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ user_form.prenoms.id_for_label }}">Last Name</label>
+                                                        {{ user_form.prenoms }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ user_form.sexe.id_for_label }}">Sexe</label>
+                                                        {{ user_form.sexe }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ user_form.DateNaiss.id_for_label }}">Date de naissance</label>
+                                                        {{ user_form.DateNaiss }}
+                                                        <small id="email" name="email" style="color: red; font-size: 12px;">Le format de la date est celui-ci: JJ/MM/AAAA</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ profile_form.phone.id_for_label }}">Numéro de Téléphone</label>
+                                                        {{ profile_form.phone }}
+                                                        <span id="email" name="email" style="color: red; font-size: 13px;">Par defaut, votre numéro n'est pas enregistré. Il ne peut contenir que 15 caractères et apres enregistrement, il devient unique.</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-7 mb-4">
+                                                    <div class="form-group">
+                                                        <label for="{{ profile_form.image.id_for_label }}">Image de profile</label>
+                                                        {{ profile_form.image }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- Partie formulaire photo et profile -->
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="d-flex align-items-center justify-content-center flex-column">
+                                            <div class="w-50 p-3">
+                                                {% if user.profile.image %}
+    <img src="{{ user.profile.image.url }}" alt="profile image" class="img-fluid rounded-circle">
+{% else %}
+    <img src="{% static 'img/default_profile_image.png' %}" alt="default profile image" class="img-fluid rounded-circle">
+{% endif %}
+
+                                            </div>
+                                            <div class="text-center">
+                                                <h4 class="font-weight-bold h6">{{ user.email }}</h4>
+                                                <h7 class="font-weight-bold h6"><i style="font-size: 11px;">{{ user.noms }}</i><i style="font-size: 11px;"> {{ user.prenoms }}</i></h7>
+                                                    <p class="font-italic text-muted">ManagHotels.com</p>
+                                            </div>
+                                        </div>
+                                        <div class="small font-weight-light mt-4 text-center text-muted">
+                                        </div>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <p class="mb-2 text-muted">
+                                                &copy; <a target="_blank" href="https://www.facebook.com/chynel.soki">Ferrand SOKI</a> 
+                                                - <a target="_blank" href="https://www.linkedin.com/in/ferrand-soki/">Django Developpeur</a>.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fin Formulaire profile et photo-->
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
