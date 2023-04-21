@@ -8,7 +8,7 @@ from .models import Message, Facture, Reservation, Commande
     
 
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('sujet', 'idUser', 'message')
+    list_display = ('sujet', 'idUser', 'message', 'reponse')
     search_fields = ('idUser__email')
 
 class ReservationAdmin(admin.ModelAdmin):

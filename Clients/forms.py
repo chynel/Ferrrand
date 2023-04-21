@@ -16,11 +16,6 @@ class MessageForm(forms.ModelForm):
             'idUser': forms.HiddenInput(),
         }
 
-    """def save(self, user, commit=True):
-        message = super(MessageForm, self).save(commit=False)
-        message.idUser = user.id
-        if commit:
-            message.save()
-        return message"""
+    
 
 

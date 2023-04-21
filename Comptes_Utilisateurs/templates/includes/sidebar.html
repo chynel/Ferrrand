@@ -27,7 +27,15 @@
                         <span class="pcoded-micon"><i class="feather icon-user"></i></span>
                             <span class="pcoded-mtext">Profile Page</span></a>
                 </li>
-                <li><a href = "{% url 'creer_message' %}" class = "button big">Nous-contacter</a></li>
+
+
+                <li data-username="Message page" 
+                    class="nav-item {% if 'message' in segment %} active {% endif %}">
+                    <a href = "{% url 'creer_message' %}" class="nav-link "><span class="pcoded-micon"><i
+                            class="feather icon-server"></i></span><span class="pcoded-mtext">Envoyer un message</span></a>
+                </li>
+                
+
                 <li data-username="Password Page" 
                     class="nav-item {% if 'profile' in segment %} active {% endif %}">
                     <a href = "{% url 'changpassword' %}" class="nav-link">

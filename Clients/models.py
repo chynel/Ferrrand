@@ -26,6 +26,7 @@ class Message(models.Model):
     sujet = models.CharField(max_length=75, null=False)
     message = models.TextField(null=False)
     dateEnvoi = models.DateTimeField(auto_now=True, null=False)
+    reponse = models.TextField(null=False, default="Vous n'avez pas encore de réponse à ce message")
     idUser = models.ForeignKey(User, verbose_name='Mail Client', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
