@@ -27,10 +27,19 @@ class Message(models.Model):
     message = models.TextField(null=False)
     dateEnvoi = models.DateTimeField(auto_now=True, null=False)
     reponse = models.TextField(null=False, default="Vous n'avez pas encore de réponse à ce message")
+    repondu = models.BooleanField(default=False) # champ pour le drapeau de modification de la reponse par defaut
     idUser = models.ForeignKey(User, verbose_name='Mail Client', null=True, on_delete=models.SET_NULL)
-
+    
     def __str__(self):
         return self.sujet
+    
+    def save(self, *args, **kwargs):
+        if self.pk:
+            # vérifier si le champ reponse a été modifié
+            if self.reponse != Message.objects.get(pk=self.pk).reponse:
+                self.repondu = True
+        super(Message, self).save(*args, **kwargs)
+    
 
 
 class Reservation(models.Model):

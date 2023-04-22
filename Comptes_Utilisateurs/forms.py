@@ -60,7 +60,7 @@ class ProfileCreationForm(forms.ModelForm):
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
         if Profile.objects.filter(phone=phone).exists():
-            raise forms.ValidationError('Cet est déjà est déjà pris')
+            raise forms.ValidationError('Ce numéro est déjà est déjà pris')
         return phone
 
 

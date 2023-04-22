@@ -104,12 +104,7 @@
                                     <div class="card-block">
                                         <div class="d-flex align-items-center justify-content-center flex-column">
                                             <div class="w-50 p-3">
-                                                {% if user.profile.image %}
-    <img src="{{ user.profile.image.url }}" alt="profile image" class="img-fluid rounded-circle">
-{% else %}
-    <img src="{% static 'img/default_profile_image.png' %}" alt="default profile image" class="img-fluid rounded-circle">
-{% endif %}
-
+                                                <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% endif %}"  alt="Photo de Profile" class="img-fluid rounded-circle">
                                             </div>
                                             <div class="text-center">
                                                 <h4 class="font-weight-bold h6">{{ user.email }}</h4>

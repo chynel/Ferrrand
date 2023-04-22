@@ -14,6 +14,7 @@ User = get_user_model()
 
 @login_required
 def creer_message(request):
+    messages_liste = Message.objects.filter(idUser=request.user).order_by('-id')[:25]
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
@@ -23,22 +24,19 @@ def creer_message(request):
             # Vérifier le nombre de messages déjà enregistrés
             messages_count = Message.objects.filter(idUser=request.user).count()
             if messages_count >= 25:
-                messages_liste = Message.objects.filter(idUser=request.user).order_by('-id')[:25]
                 messages.warning(request, 'Vous avez 25 messages sur votre liste de messages envoyés, supprimez les plus anciens pour enregistrer de nouveaux.')
                 return render(request, 'form_elements.html', {'form': form, 'messages_liste': messages_liste})
             
             message.save()
             messages.success(request, 'Votre message a été envoyé avec succès!')
-            messages_liste = Message.objects.filter(idUser=request.user).order_by('-id')[:25]
             form = MessageForm()
-            return render(request, 'form_elements.html', {'form': form, 'messages_liste': messages_liste})
         else:
-            messages.error(request, 'Le formulaire contient des erreurs.')
-            messages_liste = Message.objects.filter(idUser=request.user).order_by('-id')[:25]
-            return render(request, 'form_elements.html', {'form': form, 'messages_liste': messages_liste})
+            messages.error(request, 'Une erreur s\'est produite. Veuillez corriger les erreurs ci-dessous.')
     else:
         form = MessageForm(initial={'idUser': request.user})
-    return render(request, 'form_elements.html', {'form': form})
+    
+    return render(request, 'form_elements.html', {'form': form, 'messages_liste': messages_liste})
+
 
 
 @login_required
@@ -46,12 +44,11 @@ def supprimer_message(request, message_id):
     message = get_object_or_404(Message, id=message_id, idUser=request.user)
     message.delete()
     messages.success(request, 'Votre message a été supprimé avec succès.')
-    messages_liste = Message.objects.filter(idUser=request.user).order_by('-id')[:25]
-    form = MessageForm()
-    return render(request, 'form_elements.html', {'form': form, 'messages_liste': messages_liste})
+    return redirect('nom_de_la_vue')
 
 
 @login_required
 def message_reponse(request, message_id):
     message = get_object_or_404(Message, id=message_id, idUser=request.user)
-    return render(request, 'message_reponse.html', {'message': message})
+    messages_liste = Message.objects.filter(idUser=request.user).order_by('-id')[:25]
+    return render(request, 'message_reponse.html', {'message': message, 'messages_liste': messages_liste})

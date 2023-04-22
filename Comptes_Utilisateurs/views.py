@@ -133,7 +133,7 @@ def ProfileView(request):
                 msg = 'Ce numéro de téléphone est déjà utilisé.'
             else:
                 # Enregistrer les modifications
-                if user_form.is_valid():
+                if user_form.is_valid() and profil_form.is_valid():
                     user = user_form.save(commit=False)
                     user.save()
                     profile_form.save()

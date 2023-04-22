@@ -4,12 +4,17 @@
 # -- importations des modules -- #
 from django.contrib import admin
 from .models import Message, Facture, Reservation, Commande
+from django.contrib.auth.models import Permission, Group
     
     
 
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('sujet', 'idUser', 'message', 'reponse')
-    search_fields = ('idUser__email')
+    list_display = ('sujet', 'idUser', 'message', 'reponse', 'repondu') # afficher la colonne modification
+    search_fields = ('idUser__email', 'sujet')
+    fields = ('sujet', 'message', 'idUser', 'reponse',) # ajouter modification aux fields
+    readonly_fields = ('sujet', 'message', 'idUser',)
+
+    
 
 class ReservationAdmin(admin.ModelAdmin):
     list_display = ('numeroRes', 'idUser', 'idService', 'dateReservation', 'heureReservation',)
@@ -36,7 +41,7 @@ class CommandeAdmin(admin.ModelAdmin):
 # -- mise en place des registres -- #
 
 admin.site.register(Reservation, ReservationAdmin)
-admin.site.register(Message)
+admin.site.register(Message, MessageAdmin)
 admin.site.register(Facture, FactureAdmin)
 admin.site.register(Commande, CommandeAdmin)
 

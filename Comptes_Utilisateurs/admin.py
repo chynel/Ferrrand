@@ -7,7 +7,7 @@ from .models import CustomUser, Profile
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ('email', 'is_staff', 'is_superuser', 'is_client')
-    list_filter = ('is_staff', 'is_superuser', 'is_client')
+    list_filter = ('is_superuser', 'is_staff', 'is_client')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal Info', {'fields': ('noms','prenoms', 'sexe', 'DateNaiss', 'question', 'reponse')}),
