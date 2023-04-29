@@ -134,9 +134,6 @@ class ProfileUpdateForm(forms.ModelForm):
     image = forms.ImageField(
         label='Image',
         widget=forms.ClearableFileInput(
-            attrs={
-                "class": "form-control"
-            }
         ),
         required=False,
     )

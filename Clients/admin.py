@@ -5,6 +5,7 @@
 from django.contrib import admin
 from .models import Message, Facture, Reservation, Commande
 from django.contrib.auth.models import Permission, Group
+from .models import Produit, CategorieProd
     
     
 
@@ -37,11 +38,31 @@ class CommandeAdmin(admin.ModelAdmin):
     ordering = ('-dateCreationCom',)#Pour que les Factures s'affichent du plus recent à la plus vielle.
 
 
+class ProduitInline(admin.TabularInline):
+    model = Produit
+    extra = 1
+    
+class CategorieProdAdmin(admin.ModelAdmin):
+    inlines = [ProduitInline]
+    
+
+class ProduitAdmin(admin.ModelAdmin):
+    list_display = ('libellePro', 'prixPro', 'QteProduit', 'categorie',)
+    search_fields = ('libellePro', 'descriptionPro',)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'categorie':
+            kwargs['queryset'] = CategorieProd.objects.filter()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 # -- mise en place des registres -- #
 
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Message, MessageAdmin)
+admin.site.register(Produit, ProduitAdmin)
+admin.site.register(CategorieProd, CategorieProdAdmin)
+
+
 admin.site.register(Facture, FactureAdmin)
 admin.site.register(Commande, CommandeAdmin)
 

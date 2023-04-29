@@ -56,11 +56,20 @@ MIDDLEWARE = [
 ]
 
 
+# Configuration CSRF_TRUSTED_ORIGINS mise à jour pour Django 4.0
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://localhost:8080',
+    #'https://ManagHotels.com',
+    #'https://www.ManagHotels.com',
+]
+
+
 AUTH_USER_MODEL = 'Comptes_Utilisateurs.CustomUser'
 
 
 ROOT_URLCONF = 'GesHotels.urls'
-LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
+ManahHotels_REDIRECT_URL = "home"  # Route defined in home/urls.py
 LOGOUT_REDIRECT_URL = "home"  # Route defined in home/urls.py
 TEMPLATE_DIR = os.path.join(CORE_DIR, "Comptes_Utilisateurs/templates")  # ROOT dir for templates
 CLIENTS_TEMPLATE_DIR = os.path.join(CORE_DIR, "Clients/templates")
@@ -144,7 +153,7 @@ STATICFILES_DIRS = (
 
 # -- mise en place des fichiers medias -- #
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

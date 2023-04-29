@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Message
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.views.generic import ListView
+from .models import CategorieProd, Produit
+from django.utils.decorators import method_decorator
 
 
 
@@ -44,7 +47,7 @@ def supprimer_message(request, message_id):
     message = get_object_or_404(Message, id=message_id, idUser=request.user)
     message.delete()
     messages.success(request, 'Votre message a été supprimé avec succès.')
-    return redirect('nom_de_la_vue')
+    return redirect('creer_message')
 
 
 @login_required
@@ -52,3 +55,24 @@ def message_reponse(request, message_id):
     message = get_object_or_404(Message, id=message_id, idUser=request.user)
     messages_liste = Message.objects.filter(idUser=request.user).order_by('-id')[:25]
     return render(request, 'message_reponse.html', {'message': message, 'messages_liste': messages_liste})
+
+
+@method_decorator(login_required, name='dispatch')
+class CategorieProdListView(ListView):
+    model = CategorieProd
+    template_name = 'produits_cate.html'
+    context_object_name = 'categories'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        produits = Produit.objects.all()
+        context['produits'] = produits
+        return context
+    
+
+@login_required
+def produit_detail(request, pk):
+    produit = get_object_or_404(Produit, pk=pk)
+    context = {'produit': produit}
+    return render(request, 'nom_de_votre_template.html', context)
+

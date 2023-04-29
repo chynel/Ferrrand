@@ -1,0 +1,106 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} UI Forms {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <div class="page-header-title">
+                                        <h5 class="m-b-10">Emission de Messages</h5>
+                                    </div>
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Message</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Créer Message</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Message</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="color: #8B0000">#</th>
+                                                        <th style="color: #8B0000">Catégories</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for categorie in object_list|dictsort:'libelleCategorie' %}
+                                                        <tr>
+                                                            <th scope="row" style="color: #8B0000">{{ forloop.counter }}</th>
+                                                            <td><a href="#{{ categorie.id }}">{{ categorie.libelleCategorie }}</a></td>
+                                                        </tr>
+                                                    {% empty %}
+                                                        <tr>
+                                                            <td colspan="2">Aucune catégorie disponible.</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            
+                                            
+                                            {% for categorie in object_list|dictsort:"libelleCategorie" %}
+                                                <a id="{{ categorie.id }}"></a>
+                                                <h2>{{ categorie.libelleCategorie }}</h2>
+                                                <div class="produit-grid">
+                                                    {% if categorie.produits.all %}
+                                                    {% for produit in categorie.produits.all %}
+                                                        <div class="produit-card">
+                                                        <img src="{{ produit.photoProduit.url }}" alt="{{ produit.libellePro }}">
+                                                        <div class="produit-card-body">
+                                                            <h3>{{ produit.libellePro }}</h3>
+                                                            <p class="prix">{{ produit.prixPro }}</p>
+                                                            <a href="{% url 'produit_detail' produit.id %}" class="btn-produit">Voir détails</a>
+                                                        </div>
+                                                        </div>
+                                                    {% empty %}
+                                                        <p class="aucun-produit-msg">Aucun produit disponible pour cette catégorie.</p>
+                                                    {% endfor %}
+                                                    {% else %}
+                                                    <p class="aucun-produit-msg">Aucun produit disponible pour cette catégorie.</p>
+                                                    {% endif %}
+                                                </div>
+                                                {% endfor %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

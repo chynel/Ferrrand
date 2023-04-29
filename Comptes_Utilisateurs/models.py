@@ -96,5 +96,11 @@ class Profile(models.Model):
         uploaded_image = InMemoryUploadedFile(output_io_stream,'ImageField', "%s.jpg" % uploaded_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output_io_stream), None)
         return uploaded_image
 
+    def get_image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
+        else:
+            return reverse('photoProfil/default.jpg')
+
     def __str__(self):
-        return f'{self.user.email} Profile'
+        return f'{self.user.email} Profile'    

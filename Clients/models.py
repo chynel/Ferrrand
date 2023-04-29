@@ -143,8 +143,9 @@ class Produit(models.Model):
     prixPro = models.DecimalField(max_digits=10, verbose_name='Prix Produit', decimal_places=2)
     QteProduit = models.IntegerField(verbose_name='Quantité de produit')
     descriptionPro = models.TextField(verbose_name='Description', max_length=1500, null=False)
-    photoProduit = models.ImageField(upload_to='photoProduit', default='default.jpg', blank=True)
+    photoProduit = models.ImageField(default='default.jpg', blank=True)
     dateCreationPro = models.DateTimeField(auto_now_add=True, verbose_name='Date de création')
+    categorie = models.ForeignKey('CategorieProd', on_delete=models.DO_NOTHING, related_name='produits', null=True, blank=True)
 
     class Meta:
         '''Meta definition pour Produit.'''
@@ -153,22 +154,8 @@ class Produit(models.Model):
         verbose_name_plural = 'Produits'
 
     def __str__(self):
-        return str(self.libelle)
-    
-    
-    
-class Composer(models.Model):
-    '''Model definition pour Composer.'''
-    idProduit = models.OneToOneField(Produit, on_delete=models.DO_NOTHING, verbose_name='ID Produit')
-    idCategorie = models.OneToOneField(Commande, on_delete=models.DO_NOTHING, verbose_name='ID Catégorie')
+        return str(self.libellePro)
 
-    class Meta:
-        '''Meta definition pour Composer.'''
-
-        verbose_name = 'Composer'
-        verbose_name_plural = 'Composers'
-
-    
 
 class CategorieProd(models.Model):
     '''Model definition puor CategorieProd.'''
@@ -177,8 +164,8 @@ class CategorieProd(models.Model):
     class Meta:
         '''Meta definition pour CategorieProd.'''
 
-        verbose_name = 'CategorieProd'
-        verbose_name_plural = 'CategorieProds'
+        verbose_name = 'Categorie Produit'
+        verbose_name_plural = 'Categorie Produits'
     
     def __str__(self):
         return str(self.libelleCategorie)

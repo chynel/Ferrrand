@@ -1,0 +1,97 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Forms {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <div class="page-header-title">
+                                        <h5 class="m-b-10">Emission de Messages</h5>
+                                    </div>
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Message</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Créer Message</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Message</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5>Créer un message</h5>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {% if messages %}
+                                                        {% for message in messages %}
+                                                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                                                {{ message }}
+                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    <div class="container">
+                                                    
+                                                        <div class="main-content">
+                                                            <h2>Tous les produits</h2>
+                                                    
+                                                            <div class="product-list">
+                                                                {% for produit in produits %}
+                                                                    <div class="product">
+                                                                        <a href="{% url 'produit_detail' produit.pk %}">
+                                                                        <img src="{{ produit.photoProduit.url }}" alt="{{ produit.libellePro }}">
+                                                                        <h3>{{ produit.libellePro }}</h3>
+                                                                        </a>
+                                                                        <p class="description">{{ produit.descriptionPro }}</p>
+                                                                        <p class="price">{{ produit.prixPro }} €</p>
+                                                                    </div>
+                                                                {% empty %}
+                                                                <p>Aucun produit disponible</p>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

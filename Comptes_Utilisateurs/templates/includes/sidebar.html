@@ -34,6 +34,12 @@
                     <a href = "{% url 'creer_message' %}" class="nav-link "><span class="pcoded-micon"><i
                             class="feather icon-server"></i></span><span class="pcoded-mtext">Envoyer un message</span></a>
                 </li>
+
+                <li data-username="Message page" 
+                    class="nav-item {% if 'message' in segment %} active {% endif %}">
+                    <a href = "{% url 'produits_cate' %}" class="nav-link "><span class="pcoded-micon"><i
+                            class="feather icon-server"></i></span><span class="pcoded-mtext">Catégories & Produits</span></a>
+                </li>
                 
 
                 <li data-username="Password Page" 
